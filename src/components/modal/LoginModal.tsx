@@ -31,8 +31,6 @@ export default function LoginModal() {
   }, [loginModal, registerModal, isLoading])
 
   const onSubmit = useCallback(async () => {
-
-
     setIsLoading(true)
 
     await signInWithEmailAndPassword(auth, email, password)
@@ -49,11 +47,13 @@ export default function LoginModal() {
         const errorMessage = error.message
       })
       .finally(() => {
-        
+
         setIsLoading(false)
       })
 
   }, [auth, email, password, setIsLoading])
+
+  
 
   const bodyContent = (
     <div className='flex flex-col gap-2'>
@@ -66,6 +66,7 @@ export default function LoginModal() {
   const footerContent = (
 
     <div className='flex flex-row gap-2 mt-2 mx-auto'>
+
       <p>
         First time using Todo List?
       </p>
@@ -74,7 +75,6 @@ export default function LoginModal() {
     </div>
 
   )
-
 
   return (
     <div>
