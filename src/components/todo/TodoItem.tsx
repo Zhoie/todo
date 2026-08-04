@@ -30,14 +30,10 @@ interface TodoitemProps {
 export default function Todoitem({ todo, index }: TodoitemProps) {
 
 
-    const [checked, setChecked] = useState(false)
+    const [checked, setChecked] = useState(todo.completed)
 
     const handelChecked = () => {
-        
-
-        //update completed to local state
-        todo.completed = !todo.completed
-        
+        const completed = !checked
 
         //update completed to firebase
         const updateCompleted = async (index: number) => {
@@ -45,11 +41,11 @@ export default function Todoitem({ todo, index }: TodoitemProps) {
             const querySnapshot = await getDocs(q);
             const docId = querySnapshot.docs[index].id;
             await updateDoc(doc(db, "todos", docId), {
-                completed: todo.completed,
+                completed,
             });
         }
-        setChecked(todo.completed)
-        updateCompleted(index)
+        setChecked(completed)
+        void updateCompleted(index)
 
     }
 
@@ -68,10 +64,10 @@ export default function Todoitem({ todo, index }: TodoitemProps) {
 
 
     return (
-        <li className={todo.completed ? styles.liCompleted : styles.li}>
+        <li className={checked ? styles.liCompleted : styles.li}>
             <div className={styles.row}>
-                <input onClick={handelChecked} checked={todo.completed} type='checkbox' placeholder='checkbox' onChange={() => setChecked(todo.completed)} />
-                <p className={todo.completed ? styles.textCompleted : styles.text}>
+                <input checked={checked} type='checkbox' placeholder='checkbox' onChange={handelChecked} />
+                <p className={checked ? styles.textCompleted : styles.text}>
                     {todo.text}
                 </p>
             </div>
